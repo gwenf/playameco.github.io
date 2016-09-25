@@ -5,7 +5,7 @@ import { createHashHistory } from 'history'
 const appHistory = useRouterHistory(createHashHistory)({ queryKey: false });
 
 import { connect } from 'react-redux'
-import { verify } from '../../actions/users'
+import { verify, fetchDefaultUser } from '../../actions/users'
 
 class Verify extends Component {
 	constructor(){
@@ -24,6 +24,9 @@ class Verify extends Component {
 
 	    this.props.dispatch(
 	    	verify(username, code)
+    	)
+    	this.props.dispatch(
+	    	fetchDefaultUser()
     	)
 	}
 

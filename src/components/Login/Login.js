@@ -27,7 +27,7 @@ class Login extends Component {
 	    	login(email, pwd)
     	)
 
-        appHistory.push('/')
+        // appHistory.push('/')
 
 	}
 

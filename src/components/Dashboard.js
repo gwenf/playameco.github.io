@@ -25,9 +25,8 @@ class Dashboard extends Component {
 		})
 		this.props.dispatch(
 			setCurrentMaterial(chosenMaterial)
-		).then(()=>{
-			appHistory.push('/materials');
-		})
+		)
+		appHistory.push('/materials');
 		// localStorage.setItem('chosenMaterial', chosenMaterial)
 	}
 	componentWillMount(){

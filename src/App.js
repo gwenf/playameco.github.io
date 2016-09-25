@@ -34,17 +34,19 @@ class App extends Component {
 	    }
 	}
   render () {
+  	var homePage = this.props.username ? 'Dashboard' : 'Home';
+  	var homeLink = this.props.username ? '/dashboard' : '/';
     return (
     	<div>
     		<div className='main-top-nav'>
-		      <Link to='/'>
+		      <Link to='/' className='no-bg'>
 		      		<img id='mainlogo' src='images/ameco-logo.svg' alt='amEco App Logo' />
 		      </Link>
 		      <div>
-			    <IndexLink to='/' activeClassName="active-link">Home</IndexLink>|
+			    <IndexLink to={homeLink} activeClassName="active-link">{homePage}</IndexLink>|
 			    <Link to='/about' activeClassName="active-link">About</Link>|
 			    {this.props.username ? (
-	                <Link onClick={this.logOut.bind(this)} activeClassName="active-link">Log out</Link>
+	                <Link onClick={this.logOut.bind(this)} activeClassName="active-link" style={{cursor: 'pointer'}}>Log out</Link>
 	            ) : (
 	                <Link to="/login" activeClassName="active-link">Login</Link>
 	            )}

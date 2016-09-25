@@ -1,29 +1,9 @@
 import { constRegion, constIdentityPoolId, constUserPoolId, constClientId, constCognitoProviderId } from './awsUserConfig'
-import { signingUp, signedUp, passwordChangeSuccess, verificationCodeSent, sendVerificationCodeFailed, noUserInfoAvail, passwordChangeError, updatingPassword, clearingUserMessages, loggingIn, loggedIn, loggedInError, loggingOut, loggingOutError, loggedOut, checkingSession, checkingSessionError, checkedSession } from './actionGenerators/agUsers'
+import { signingUp, signedUp, passwordChangeSuccess, verificationCodeSent, sendVerificationCodeFailed, noUserInfoAvail, passwordChangeError, updatingPassword, clearingUserMessages, loggingIn, loggedIn, loggedInError, loggingOut, loggingOutError, loggedOut, checkingSession, checkingSessionError, checkedSession, fetchingDefaultUser, fetchedDefaultUser } from './actionGenerators/agUsers'
 
 import { Link, useRouterHistory, browserHistory } from 'react-router';
 import { createHashHistory } from 'history'
 const appHistory = useRouterHistory(createHashHistory)({ queryKey: false });
-
-// var AWS = require('aws-sdk');
-
-// // Set the region where your identity pool exists (us-east-1, eu-west-1)
-// AWS.config.region = 'us-east-1';
-
-// // Configure the credentials provider to use your identity pool
-// AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-//     IdentityPoolId: 'IDENTITY_POOL_ID',
-// });
-
-// // Make the call to obtain credentials
-// AWS.config.credentials.get(function(){
-
-//     // Credentials will be available when this function is called.
-//     var accessKeyId = AWS.config.credentials.accessKeyId;
-//     var secretAccessKey = AWS.config.credentials.secretAccessKey;
-//     var sessionToken = AWS.config.credentials.sessionToken;
-
-// });
 
 
 var initUserPool = function(awsRegion, awsIdentityPoolId, awsUserPoolId, awsClientId){
@@ -51,29 +31,29 @@ let currentUser = {}
 
 
 
-function fetchDefaultUser() {
+export function fetchDefaultUser() {
+  console.log('fetchUserData')
   return (dispatch, getState) => {
-    //Let everybody know we are starting to retrieve so they can show spinners or other things
-    dispatch(fetchingBlankPref())
-
-    //Fetch state
+    console.log('fetchUserData 2')
+    dispatch(fetchingDefaultUser())
     const state = getState()
+    console.log('fetchUserData 3')
 
     return $.ajax({
-        url : 'https://v04rk4df1m.execute-api.us-east-1.amazonaws.com/dev/preferences/default',
+        url: 'https://wyay2gb92f.execute-api.us-east-1.amazonaws.com/dev/users/default',
         type: "GET",
         contentType: "application/json",
-        headers: {
-            Authorization : state.users.token
-        },
-        success: function(data, textStatus, jqXHR)
+        // headers: {
+        //     Authorization : state.users.token
+        // },
+        success: function(data)
         {
-            dispatch(fetchedBlankPref(data));
+            dispatch(fetchedDefaultUser(data));
         },
-        error: function (jqXHR, textStatus, errorThrown)
+        error: function (error)
         {
-            dispatch(fetchingBlankPrefError(textStatus));
-            handleAPIError(jqXHR, textStatus, errorThrown);
+            // dispatch(fetchingError(textStatus));
+            // handleAPIError(error);
         }
     });
   }
@@ -153,7 +133,9 @@ export function verify(username, confirmCode){
         }
         console.log('call result: ' + result);
         console.log('user name is ' + cognitoUser.getUsername());
-        dispatch(signedUp(AWS.config.credentials.identityId, cognitoUser.getUsername()));
+        var username = cognitoUser.getUsername();
+        dispatch(signedUp(AWS.config.credentials.identityId, username));
+        // fetchDefaultUser();
         appHistory.replace('/dashboard')
     });
   }

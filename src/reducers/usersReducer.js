@@ -91,6 +91,15 @@ const user = (state = {error:null, token:null, username:null, email:null, id:nul
           error: action.error
         })
 
+    case 'FETCHING_DEFAULT_USER':
+        return state;
+
+    case 'FETCHED_DEFAULT_USER':
+        return {
+          ...state,
+          user: action.user
+        }
+
     default:
         return Object.assign({}, state, {
         })

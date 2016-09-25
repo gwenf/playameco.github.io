@@ -117,4 +117,17 @@ export const noUserInfoAvail = (error) => {
   }
 }
 
+export const fetchingDefaultUser = () => {
+  return {
+    type: 'FETCHING_DEFAULT_USER'
+  }
+}
+
+export const fetchedDefaultUser = (user) => {
+  return {
+    type: 'FETCHED_DEFAULT_USER',
+    user
+  }
+}
+
 
